@@ -1,6 +1,6 @@
 import { IsEmail, IsOptional, IsString, IsUrl, Length } from "class-validator";
 
-export class UpdateProveedoreDto {
+export class EditarProveedorDto {
     @IsString()
     @Length(1, 255)
     Descripcion: string;

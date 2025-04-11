@@ -1,7 +1,7 @@
 
 import { IsEmail, IsOptional, IsString, IsUrl, Length } from "class-validator";
 
-export class CreateProveedoreDto {
+export class CrearProveedorDto {
     @IsString()
     @Length(1, 255)
     Descripcion: string;

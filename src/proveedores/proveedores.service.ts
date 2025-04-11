@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
-import { CreateProveedoreDto } from './dto/create-proveedore.dto';
-import { UpdateProveedoreDto } from './dto/update-proveedore.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CrearProveedorDto } from './dto/create-proveedore.dto';
+import { EditarProveedorDto } from './dto/update-proveedore.dto';
+import { Proveedor } from './entities/proveedor.entity';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { BaseService } from 'src/base/base.service';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class ProveedoresService {
-  create(createProveedoreDto: CreateProveedoreDto) {
-    return 'This action adds a new proveedore';
-  }
+export class ProveedoresService extends BaseService<Proveedor, CrearProveedorDto, EditarProveedorDto> {
+    constructor(
+      @InjectRepository(Proveedor)
+      ProveedorRepo: Repository<Proveedor>
+    ) {
+      super(ProveedorRepo, 'Proveedor');
+    }
 
-  findAll() {
-    return `This action returns all proveedores`;
-  }
+    public async reactivar(id: string): Promise<Proveedor> {
+      const entity = await this.repository.findOne({
+        where: { Id: id } as FindOptionsWhere<Proveedor>,
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} proveedore`;
-  }
+    if (!entity) {
+        throw new NotFoundException(`El id ${id} no fue encontrado`);
+    }
 
-  update(id: number, updateProveedoreDto: UpdateProveedoreDto) {
-    return `This action updates a #${id} proveedore`;
-  }
+    entity.Activo = true;
 
-  remove(id: number) {
-    return `This action removes a #${id} proveedore`;
-  }
+    return this.repository.save(entity);
+    }
+
+    public async eliminar(id: string): Promise<Proveedor> {
+        const entity = await this.repository.findOne({
+            where: { Id: id } as FindOptionsWhere<Proveedor>,
+        });
+    
+        if (!entity) {
+            throw new NotFoundException(`El id ${id} no fue encontrado`);
+        }
+    
+        entity.Activo = false;
+    
+        return this.repository.save(entity);
+    }
 }
