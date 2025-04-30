@@ -1,0 +1,46 @@
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Marca } from "src/marcas/entities/marca.entity";
+import { ProductoTipo } from "src/productos-tipos/entities/productos-tipo.entity";
+import { Proveedor } from "src/proveedores/entities/proveedor.entity";
+
+export class CrearProductoDto {
+
+    @IsNotEmpty()
+    @IsString()
+    Codigo: string;
+  
+    @IsNotEmpty()
+    @IsString()
+    Descripcion: string;
+  
+    @IsNotEmpty()
+    @IsString()
+    PrecioVenta: string;
+  
+    @IsNotEmpty()
+    @IsString()
+    PrecioCompra: string;
+  
+    @IsNotEmpty()
+    Tipo: ProductoTipo;
+  
+    @IsNotEmpty()
+    Marca: Marca;
+  
+    @IsArray()
+    @IsNotEmpty()
+    Proveedores: Proveedor[];
+  
+    @IsArray()
+    @IsOptional()
+    @IsString({ each: true })
+    Imagenes: string[];
+  
+    @IsOptional()
+    @IsString()
+    ImagenPresentacion: string;
+  
+    @IsOptional()
+    @IsString()
+    Detalles: string;
+  }
