@@ -8,7 +8,7 @@ export class Proveedor {
     @Column('text')
     Descripcion: string;
   
-    @Column('text', {unique: true} )
+    @Column('text' )
     Codigo: string;
   
     @Column('text')

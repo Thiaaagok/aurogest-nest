@@ -8,34 +8,34 @@ export class ProveedoresController {
    constructor(private readonly proveedoresService: ProveedoresService) {}
   
       @Get()
-      obtenerTodosLosUsuarios(){
+      obtenerTodosLosProveedores(){
   
           return this.proveedoresService.obtenerTodos();
       }
   
       @Get(':id')
-      obtenerUsuarioPorId( @Param('id', ParseUUIDPipe ) id:string){
+      obtenerProveedorPorId( @Param('id', ParseUUIDPipe ) id:string){
           return this.proveedoresService.obtenerPorId(id);
       }
   
       @Post()
       @UsePipes( ValidationPipe)
-      crearUsuario( @Body() proveedor: CrearProveedorDto){
+      crearProveedor( @Body() proveedor: CrearProveedorDto){
           this.proveedoresService.crear(proveedor);
       }
   
       @Patch(':id')
-      inactivarReactivarUsuario( @Param('id', ParseUUIDPipe) id: string){
+      inactivarReactivarProveedor( @Param('id', ParseUUIDPipe) id: string){
           this.proveedoresService.reactivar(id);
       }
   
       @Put(':id')
-      editarUsuario( @Body() proveedor: EditarProveedorDto, @Param('id', ParseUUIDPipe) id: string){
+      editarProveedor( @Body() proveedor: EditarProveedorDto, @Param('id', ParseUUIDPipe) id: string){
           this.proveedoresService.editar(proveedor, id);
       }
   
       @Delete(':id')
-      eliminarUsuario(@Param('id', ParseUUIDPipe) id: string){
+      eliminaroProveedor(@Param('id', ParseUUIDPipe) id: string){
           this.proveedoresService.eliminar(id);
       }
 }
