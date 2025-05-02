@@ -31,6 +31,9 @@ export class Proveedor {
   
     @Column('text')
     CodigoPostal: string;
+
+    @Column('text')
+    Usuario: string;
   
     @Column({ default: true })
     Activo: boolean;

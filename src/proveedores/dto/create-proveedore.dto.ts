@@ -34,6 +34,9 @@ export class CrearProveedorDto {
     @IsString()
     @Length(1, 255)
     Direccion: string;
+
+    @IsString()
+    Usuario: string;
     
     @IsString()
     @Length(1, 10)
