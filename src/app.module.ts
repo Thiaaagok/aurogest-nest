@@ -11,6 +11,7 @@ import { VentasModule } from './ventas/ventas.module';
 import { ComprasModule } from './compras/compras.module';
 import { MarcasModule } from './marcas/marcas.module';
 import { ProductosTiposModule } from './productos-tipos/productos-tipos.module';
+import { CategoriasModule } from './categorias/categorias.module';
 @Module({
   imports: [UsuariosModule,
     ConfigModule.forRoot(),
@@ -32,7 +33,8 @@ import { ProductosTiposModule } from './productos-tipos/productos-tipos.module';
     VentasModule,
     ComprasModule,
     MarcasModule,
-    ProductosTiposModule
+    ProductosTiposModule,
+    CategoriasModule
   ],
   controllers: [],
   providers: [BaseService],

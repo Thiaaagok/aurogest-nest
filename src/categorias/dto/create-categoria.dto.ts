@@ -1,7 +1,7 @@
 import { IsString } from "class-validator";
 
-export class CrearMarcaDto {
-
+export class CrearCategoriaDto {
+    
     @IsString()
     Descripcion: string;
     
