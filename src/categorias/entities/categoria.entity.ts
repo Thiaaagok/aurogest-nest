@@ -1,5 +1,7 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Empresa } from "src/empresas/entities/empresa.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity()
 export class Categoria {
 
     @PrimaryGeneratedColumn('uuid')
@@ -10,6 +12,10 @@ export class Categoria {
 
     @Column('text')
     Descripcion: string;
+
+    @ManyToOne(() => Empresa, { eager: true })
+    @JoinColumn({ name: 'empresa' })
+    Empresa: Empresa;
 
     @Column('boolean', { default: true })
     Activo: boolean;

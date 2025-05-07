@@ -1,7 +1,8 @@
+import { Categoria } from "src/categorias/entities/categoria.entity";
+import { Empresa } from "src/empresas/entities/empresa.entity";
 import { Marca } from "src/marcas/entities/marca.entity";
 import { ProductoTipo } from "src/productos-tipos/entities/productos-tipo.entity";
 import { Proveedor } from "src/proveedores/entities/proveedor.entity";
-import { Usuario } from "src/usuarios/model/usuario.model";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -30,9 +31,13 @@ export class Producto {
     @JoinColumn({ name: 'marcaProducto' })
     Marca: Marca;
 
-    @ManyToOne(() => Usuario, { eager: true })
-    @JoinColumn({ name: 'usuarioId' })
-    Usuario: Usuario;
+    @ManyToOne(() => Empresa, { eager: true })
+    @JoinColumn({ name: 'empresa' })
+    Empresa: Empresa;
+
+    @ManyToOne(() => Categoria, { eager: true })
+    @JoinColumn({ name: 'categoriaProducto' })
+    Categoria: Categoria;
 
     @Column('boolean')
     Activo: boolean;
@@ -47,6 +52,6 @@ export class Producto {
     @Column('text', { nullable: true })
     ImagenPresentacion: string;
 
-    @Column('text', { nullable: true })
-    Detalles: string;
+    @Column('text', { array: true, nullable: true })
+    Detalles: string[];
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Empresa } from "src/empresas/entities/empresa.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Proveedor {
@@ -32,8 +33,9 @@ export class Proveedor {
     @Column('text')
     CodigoPostal: string;
 
-    @Column('text')
-    Usuario: string;
+    @ManyToOne(() => Empresa, { eager: true })
+    @JoinColumn({ name: 'empresa' })
+    Empresa: Empresa;
   
     @Column({ default: true })
     Activo: boolean;
