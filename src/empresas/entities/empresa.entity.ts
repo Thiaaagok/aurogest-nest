@@ -7,6 +7,9 @@ export class Empresa {
   Id: string;
 
   @Column()
+  Codigo: string;
+
+  @Column()
   Descripcion: string;
 
   @Column('text')

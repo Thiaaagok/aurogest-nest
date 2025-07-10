@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ProductosTiposService } from './productos-tipos.service';
-import { CreateProductosTipoDto } from './dto/create-productos-tipo.dto';
-import { UpdateProductosTipoDto } from './dto/update-productos-tipo.dto';
+import { EditarProductoTipoDto } from './dto/update-productos-tipo.dto';
+import { CrearProductoTipoDto } from './dto/create-productos-tipo.dto';
+
 
 @Controller('productos-tipos')
 export class ProductosTiposController {
   constructor(private readonly productosTiposService: ProductosTiposService) {}
-
-  @Post()
-  create(@Body() createProductosTipoDto: CreateProductosTipoDto) {
-    return this.productosTiposService.create(createProductosTipoDto);
-  }
-
+    
   @Get()
-  findAll() {
-    return this.productosTiposService.findAll();
+  obtenerTodosLosProductoTipos(){
+
+      return this.productosTiposService.obtenerTodos();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productosTiposService.findOne(+id);
+  obtenerProductoTipoPorId( @Param('id', ParseUUIDPipe ) id:string){
+      return this.productosTiposService.obtenerPorId(id);
+  }
+
+  @Post()
+  @UsePipes( ValidationPipe)
+  crearProductoTipo( @Body() ProductoTipo: CrearProductoTipoDto){
+      this.productosTiposService.crear(ProductoTipo);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductosTipoDto: UpdateProductosTipoDto) {
-    return this.productosTiposService.update(+id, updateProductosTipoDto);
+  inactivarReactivarProductoTipo( @Param('id', ParseUUIDPipe) id: string){
+      this.productosTiposService.reactivar(id);
+  }
+
+  @Put(':id')
+  editarProductoTipo( @Body() ProductoTipo: EditarProductoTipoDto, @Param('id', ParseUUIDPipe) id: string){
+      this.productosTiposService.editar(ProductoTipo, id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productosTiposService.remove(+id);
+  eliminaroProductoTipo(@Param('id', ParseUUIDPipe) id: string){
+      this.productosTiposService.eliminar(id);
   }
 }

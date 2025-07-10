@@ -1,11 +1,9 @@
-import { IsBoolean, IsDate, IsEmail, IsNumber, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDate, IsEmail, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { Empresa } from "src/empresas/entities/empresa.entity";
 
 export class EditarUsuarioDto{
 
-    @IsDate()
-    ultimaConexion: Date;
-
-    Empresa: any;
+    Empresa: Empresa;
     
     @IsString()
     Legajo: string;

@@ -7,7 +7,6 @@ import { CommonModule } from './common/common.module';
 import { BaseService } from './base/base.service';
 import { ProveedoresModule } from './proveedores/proveedores.module';
 import { ProductosModule } from './productos/productos.module';
-import { VentasModule } from './ventas/ventas.module';
 import { ComprasModule } from './compras/compras.module';
 import { MarcasModule } from './marcas/marcas.module';
 import { ProductosTiposModule } from './productos-tipos/productos-tipos.module';
@@ -30,7 +29,6 @@ import { CategoriasModule } from './categorias/categorias.module';
     CommonModule,
     ProveedoresModule,
     ProductosModule,
-    VentasModule,
     ComprasModule,
     MarcasModule,
     ProductosTiposModule,

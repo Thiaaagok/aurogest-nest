@@ -2,6 +2,9 @@ import { IsEmail, IsOptional, IsString, IsUrl } from "class-validator";
 
 export class CrearEmpresaDto {
     @IsString()
+    Codigo: string;
+
+    @IsString()
     Descripcion: string;
   
     @IsOptional()

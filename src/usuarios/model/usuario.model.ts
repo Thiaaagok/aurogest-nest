@@ -25,14 +25,10 @@ export class Usuario {
     @JoinColumn({ name: 'EmpresaId' })
     Empresa: Empresa;
 
-    @Column('numeric',{
-        default: 0
-    })
+    @Column('int', { default: 0 })
     intentosConexion: number;
 
-    @Column('numeric',{
-        default: 0
-    })
+    @Column('int', { default: 0 })
     expiracionTiempo: number;
 
     @Column('boolean',{

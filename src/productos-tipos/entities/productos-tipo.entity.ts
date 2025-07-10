@@ -10,11 +10,7 @@ export class ProductoTipo {
     Codigo: string;
 
     @Column('text')
-    Direccion: string;
-
-    @ManyToOne(() => Empresa, { eager: true })
-    @JoinColumn({ name: 'empresa' })
-    Empresa: Empresa;
+    Descripcion: string;
 
     @Column({ default: true })
     Activo: boolean;

@@ -15,13 +15,16 @@ export class Producto {
     Codigo: string;
 
     @Column('text')
-    Descripcion: string;
+    Nombre: string;
 
     @Column('text')
     PrecioVenta: string;
 
     @Column('text')
     PrecioCompra: string;
+
+    @Column('text', { nullable: true })
+    CodigoBarra: string;
 
     @ManyToOne(() => ProductoTipo, { eager: true })
     @JoinColumn({ name: 'tipoProducto' })
@@ -38,6 +41,9 @@ export class Producto {
     @ManyToOne(() => Categoria, { eager: true })
     @JoinColumn({ name: 'categoriaProducto' })
     Categoria: Categoria;
+
+    @Column('int', { default: 0 })
+    Stock: number;
 
     @Column('boolean')
     Activo: boolean;

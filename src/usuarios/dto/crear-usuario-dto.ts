@@ -1,9 +1,10 @@
-import { IsBoolean, IsEmail, IsNumber, IsOptional, isString, IsString } from "class-validator";
+import { IsEmail, IsNumber, IsOptional ,IsString } from "class-validator";
+import { Empresa } from "src/empresas/entities/empresa.entity";
 
 export class CrearUsuarioDto {
-    
+
     @IsOptional()
-    Empresa: any;
+    Empresa: Empresa;
     
     @IsString()
     Legajo: string;

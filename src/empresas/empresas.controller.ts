@@ -7,12 +7,11 @@ import { editarEmpresaDto } from './dto/update-empresa.dto';
 export class EmpresasController {
   constructor(private readonly empresasService: EmpresasService) {}
 
- @Get()
-    obtenerTodosLosEmpresas(){
-
+    @Get()
+    obtenerTodasLosEmpresas(){
         return this.empresasService.obtenerTodos();
     }
-
+    
     @Get(':id')
     obtenerEmpresaPorId( @Param('id', ParseUUIDPipe ) id:string){
         return this.empresasService.obtenerPorId(id);

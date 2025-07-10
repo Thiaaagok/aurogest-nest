@@ -3,6 +3,9 @@ import { IsEmail, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class editarEmpresaDto {
         @IsString()
+        Codigo: string;
+
+        @IsString()
         Descripcion: string;
       
         @IsOptional()
