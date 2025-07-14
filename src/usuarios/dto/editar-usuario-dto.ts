@@ -9,10 +9,10 @@ export class EditarUsuarioDto{
     Legajo: string;
     
     @IsNumber()
-    intentosConexion: number;
+    IntentosConexion: number;
 
     @IsNumber()
-    expiracionTiempo: number;
+    ExpiracionTiempo: number;
 
     @IsString()
     Usuario: string;

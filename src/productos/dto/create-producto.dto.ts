@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsCurrency, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Categoria } from "src/categorias/entities/categoria.entity";
 import { Marca } from "src/marcas/entities/marca.entity";
 import { ProductoTipo } from "src/productos-tipos/entities/productos-tipo.entity";
@@ -15,12 +15,12 @@ export class CrearProductoDto {
     Nombre: string;
   
     @IsNotEmpty()
-    @IsString()
-    PrecioVenta: string;
+    @IsNumber()
+    PrecioVenta: number;
   
     @IsNotEmpty()
-    @IsString()
-    PrecioCompra: string;
+    @IsNumber()
+    PrecioCompra: number;
   
     @IsOptional() 
     Tipo?: ProductoTipo | null;
@@ -32,8 +32,8 @@ export class CrearProductoDto {
     Categoria?: Categoria | null;
     
     @IsOptional()
-    @IsString()
-    CodigoBarra: string;
+    @IsNumber()
+    CodigoBarra: number;
 
     @IsArray()
     @IsNotEmpty()
@@ -41,17 +41,4 @@ export class CrearProductoDto {
 
     @IsNumber()
     Stock: number;
-  
-    @IsArray()
-    @IsOptional()
-    @IsString({ each: true })
-    Imagenes: string[];
-  
-    @IsOptional()
-    @IsString()
-    ImagenPresentacion: string;
-  
-    @IsOptional()
-    @IsArray()
-    Detalles?: string[];
   }

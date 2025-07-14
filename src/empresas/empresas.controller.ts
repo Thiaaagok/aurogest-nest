@@ -20,21 +20,21 @@ export class EmpresasController {
     @Post()
     @UsePipes( ValidationPipe)
     crearEmpresa( @Body() Empresa: CrearEmpresaDto){
-        this.empresasService.crear(Empresa);
+        return this.empresasService.crear(Empresa);
     }
 
     @Patch(':id')
     inactivarReactivarEmpresa( @Param('id', ParseUUIDPipe) id: string){
-        this.empresasService.reactivar(id);
+        return this.empresasService.reactivar(id);
     }
 
     @Put(':id')
     editarEmpresa( @Body() Empresa: editarEmpresaDto, @Param('id', ParseUUIDPipe) id: string){
-        this.empresasService.editar(Empresa, id);
+        return this.empresasService.editar(Empresa, id);
     }
 
     @Delete(':id')
     eliminarEmpresa(@Param('id', ParseUUIDPipe) id: string){
-        this.empresasService.eliminar(id);
+        return this.empresasService.eliminar(id);
     }
 }

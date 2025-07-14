@@ -17,28 +17,28 @@ export class Producto {
     @Column('text')
     Nombre: string;
 
-    @Column('text')
-    PrecioVenta: string;
+    @Column('int', { default: 0 })
+    PrecioVenta: number;
 
-    @Column('text')
-    PrecioCompra: string;
+    @Column('int', { default: 0 })
+    PrecioCompra: number;
 
-    @Column('text', { nullable: true })
+    @Column('int', { default: 0 })
     CodigoBarra: string;
 
-    @ManyToOne(() => ProductoTipo, { eager: true })
+    @ManyToOne(() => ProductoTipo, { eager: true, nullable: true })
     @JoinColumn({ name: 'tipoProducto' })
     Tipo: ProductoTipo;
 
-    @ManyToOne(() => Marca, { eager: true })
+    @ManyToOne(() => Marca, { eager: true, nullable: true })
     @JoinColumn({ name: 'marcaProducto' })
     Marca: Marca;
 
-    @ManyToOne(() => Empresa, { eager: true })
+    @ManyToOne(() => Empresa, { eager: true, nullable: true })
     @JoinColumn({ name: 'empresa' })
     Empresa: Empresa;
 
-    @ManyToOne(() => Categoria, { eager: true })
+    @ManyToOne(() => Categoria, { eager: true, nullable: true })
     @JoinColumn({ name: 'categoriaProducto' })
     Categoria: Categoria;
 
@@ -51,13 +51,4 @@ export class Producto {
     @ManyToMany(() => Proveedor, { eager: true })
     @JoinTable()
     Proveedores: Proveedor[];
-
-    @Column('text', { array: true, nullable: true })
-    Imagenes: string[];
-
-    @Column('text', { nullable: true })
-    ImagenPresentacion: string;
-
-    @Column('text', { array: true, nullable: true })
-    Detalles: string[];
 }

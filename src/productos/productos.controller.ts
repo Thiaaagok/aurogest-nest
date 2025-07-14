@@ -5,37 +5,36 @@ import { EditarProductoDto } from './dto/update-producto.dto';
 
 @Controller('productos')
 export class ProductosController {
-  constructor(private readonly productosService: ProductosService) {}
-   
-  @Get()
-  obtenerTodosLosProductos(){
+    constructor(private readonly productosService: ProductosService) { }
 
-      return this.productosService.obtenerTodos();
-  }
+    @Get()
+    obtenerTodosLosProductos() {
+        return this.productosService.obtenerTodos();
+    }
 
-  @Get(':id')
-  obtenerProductoPorId( @Param('id', ParseUUIDPipe ) id:string){
-      return this.productosService.obtenerPorId(id);
-  }
+    @Get(':id')
+    obtenerProductoPorId(@Param('id', ParseUUIDPipe) id: string) {
+        return this.productosService.obtenerPorId(id);
+    }
 
-  @Post()
-  @UsePipes( ValidationPipe)
-  crearProducto( @Body() proveedor: CrearProductoDto){
-      this.productosService.crear(proveedor);
-  }
+    @Post()
+    @UsePipes(ValidationPipe)
+    crearProducto(@Body() proveedor: CrearProductoDto) {
+        return this.productosService.crear(proveedor);
+    }
 
-  @Patch(':id')
-  inactivarReactivarProducto( @Param('id', ParseUUIDPipe) id: string){
-      this.productosService.reactivar(id);
-  }
+    @Patch(':id')
+    inactivarReactivarProducto(@Param('id', ParseUUIDPipe) id: string) {
+        return this.productosService.reactivar(id);
+    }
 
-  @Put(':id')
-  editarProducto( @Body() proveedor: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string){
-      this.productosService.editar(proveedor, id);
-  }
+    @Put(':id')
+    editarProducto(@Body() proveedor: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
+        return this.productosService.editar(proveedor, id);
+    }
 
-  @Delete(':id')
-  eliminarProducto(@Param('id', ParseUUIDPipe) id: string){
-      this.productosService.eliminar(id);
-  }
+    @Delete(':id')
+    eliminarProducto(@Param('id', ParseUUIDPipe) id: string) {
+        return this.productosService.eliminar(id);
+    }
 }

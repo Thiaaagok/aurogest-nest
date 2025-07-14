@@ -26,10 +26,10 @@ export class Usuario {
     Empresa: Empresa;
 
     @Column('int', { default: 0 })
-    intentosConexion: number;
+    IntentosConexion: number;
 
     @Column('int', { default: 0 })
-    expiracionTiempo: number;
+    ExpiracionTiempo: number;
 
     @Column('boolean',{
         default: false
