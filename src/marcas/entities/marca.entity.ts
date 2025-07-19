@@ -12,10 +12,10 @@ export class Marca {
     @Column('text')
     Descripcion: string;
 
-    @ManyToOne(() => Empresa, { eager: true })
-    @JoinColumn({ name: 'empresa' })
-    Empresa: Empresa;
-
     @Column('boolean', { default: true })
     Activo: boolean;
+
+    @ManyToOne(() => Empresa, { eager: true, nullable: true })
+    @JoinColumn({ name: 'empresa' })
+    Empresa: Empresa;
 }

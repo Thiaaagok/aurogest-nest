@@ -13,10 +13,10 @@ export class Categoria {
     @Column('text')
     Descripcion: string;
 
-    @ManyToOne(() => Empresa, { eager: true })
+    @ManyToOne(() => Empresa, { eager: true, nullable: true })
     @JoinColumn({ name: 'empresa' })
     Empresa: Empresa;
 
-    @Column('boolean', { default: true })
+    @Column('boolean', { default: true })  
     Activo: boolean;
 }

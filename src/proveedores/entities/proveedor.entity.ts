@@ -33,7 +33,7 @@ export class Proveedor {
     @Column('text')
     CodigoPostal: string;
 
-    @ManyToOne(() => Empresa, { eager: true })
+    @ManyToOne(() => Empresa, { eager: true, nullable: true })
     @JoinColumn({ name: 'empresa' })
     Empresa: Empresa;
   

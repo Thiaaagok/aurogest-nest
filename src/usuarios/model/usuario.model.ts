@@ -21,8 +21,8 @@ export class Usuario {
     @Column('text')
     Legajo: string;
 
-    @ManyToOne(() => Empresa, { eager: true }) 
-    @JoinColumn({ name: 'EmpresaId' })
+    @ManyToOne(() => Empresa, { eager: true, nullable: true })
+    @JoinColumn({ name: 'empresa' })
     Empresa: Empresa;
 
     @Column('int', { default: 0 })
