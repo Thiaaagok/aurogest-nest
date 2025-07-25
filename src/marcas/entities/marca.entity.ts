@@ -14,8 +14,4 @@ export class Marca {
 
     @Column('boolean', { default: true })
     Activo: boolean;
-
-    @ManyToOne(() => Empresa, { eager: true, nullable: true })
-    @JoinColumn({ name: 'empresa' })
-    Empresa: Empresa;
 }

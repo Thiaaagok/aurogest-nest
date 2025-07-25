@@ -15,8 +15,8 @@ export class Proveedor {
     @Column('text')
     Cuit: string;
   
-    @Column('text')
-    Telefono: string;
+    @Column('int', { default: 0 })
+    Telefono: number;
   
     @Column('text')
     Email: string;
@@ -30,12 +30,8 @@ export class Proveedor {
     @Column('text')
     Direccion: string;
   
-    @Column('text')
-    CodigoPostal: string;
-
-    @ManyToOne(() => Empresa, { eager: true, nullable: true })
-    @JoinColumn({ name: 'empresa' })
-    Empresa: Empresa;
+    @Column('int', { default: 0 })
+    CodigoPostal: number;
   
     @Column({ default: true })
     Activo: boolean;

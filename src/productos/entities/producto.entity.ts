@@ -34,10 +34,6 @@ export class Producto {
     @JoinColumn({ name: 'marcaProducto' })
     Marca: Marca;
 
-    @ManyToOne(() => Empresa, { eager: true, nullable: true })
-    @JoinColumn({ name: 'empresa' })
-    Empresa: Empresa;
-
     @ManyToOne(() => Categoria, { eager: true, nullable: true })
     @JoinColumn({ name: 'categoriaProducto' })
     Categoria: Categoria;

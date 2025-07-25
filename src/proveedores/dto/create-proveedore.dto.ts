@@ -1,5 +1,5 @@
 
-import { IsEmail, IsOptional, IsString, IsUrl, Length } from "class-validator";
+import { IsEmail, IsNumber, IsOptional, IsString, IsUrl, Length } from "class-validator";
 
 export class CrearProveedorDto {
     @IsString()
@@ -14,9 +14,8 @@ export class CrearProveedorDto {
     @Length(1, 20)
     Cuit: string;
     
-    @IsString()
-    @Length(1, 20)
-    Telefono: string;
+    @IsNumber()
+    Telefono: number;
     
     @IsEmail()
     @Length(1, 100)
@@ -35,7 +34,6 @@ export class CrearProveedorDto {
     @Length(1, 255)
     Direccion: string;
     
-    @IsString()
-    @Length(1, 10)
-    CodigoPostal: string;
+    @IsNumber()
+    CodigoPostal: number;
 }

@@ -39,9 +39,6 @@ export class Empresa {
   @Column('text', { nullable: true })
   LogoUrl?: string;
 
-  @OneToMany(() => Usuario, usuario => usuario.Empresa)
-  Usuarios: Usuario[];
-
   @Column('text', { nullable: true})
   Observaciones?: string;
 
