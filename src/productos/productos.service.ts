@@ -8,38 +8,39 @@ import { EditarProductoDto } from './dto/update-producto.dto';
 
 @Injectable()
 export class ProductosService extends BaseService<Producto, CrearProductoDto, EditarProductoDto> {
-    constructor(
-      @InjectRepository(Producto)
-      productosRepo: Repository<Producto>
-    ) {
-      super(productosRepo, 'Productos');
-    }
+  constructor(
+    @InjectRepository(Producto)
+    productosRepo: Repository<Producto>
+  ) {
+    super(productosRepo, 'Productos');
+  }
 
-    public async reactivar(id: string): Promise<Producto> {
-      const entity = await this.repository.findOne({
-        where: { Id: id } as FindOptionsWhere<Producto>,
+  public async reactivar(id: string): Promise<Producto> {
+    const entity = await this.repository.findOne({
+      where: { Id: id } as FindOptionsWhere<Producto>,
     });
 
     if (!entity) {
-        throw new NotFoundException(`El id ${id} no fue encontrado`);
+      throw new NotFoundException(`El id ${id} no fue encontrado`);
     }
 
     entity.Activo = true;
 
     return this.repository.save(entity);
+  }
+
+  public async eliminar(id: string): Promise<Producto> {
+    const entity = await this.repository.findOne({
+      where: { Id: id } as FindOptionsWhere<Producto>,
+    });
+
+    if (!entity) {
+      throw new NotFoundException(`El id ${id} no fue encontrado`);
     }
 
-    public async eliminar(id: string): Promise<Producto> {
-        const entity = await this.repository.findOne({
-            where: { Id: id } as FindOptionsWhere<Producto>,
-        });
-    
-        if (!entity) {
-            throw new NotFoundException(`El id ${id} no fue encontrado`);
-        }
-    
-        entity.Activo = false;
-    
-        return this.repository.save(entity);
-    }
+    entity.Activo = false;
+
+    return this.repository.save(entity);
+  }
 }
+ 

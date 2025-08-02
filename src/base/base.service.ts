@@ -4,7 +4,7 @@ import {
     BadRequestException,
     Logger,
 } from '@nestjs/common';
-import { Repository, ObjectLiteral, DeepPartial, FindOptionsWhere } from 'typeorm';
+import { Repository, DeepPartial } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 export interface BaseEntity {
@@ -39,26 +39,18 @@ export class BaseService<T extends BaseEntity, CrearDto = any, EditarDto = any> 
             Id: id,
             ...dto,
         } as DeepPartial<T>);
-    
+
         if (!entity) {
             throw new NotFoundException(`${this.entityName} con el id ${id} no fue encontrado`);
         }
-    
+
         return this.repository.save(entity);
     }
 
     public async crear(dto: CrearDto): Promise<T> {
-        try {
-            const entity = this.repository.create(dto as DeepPartial<T>);
-            (entity as any).Id = uuid();
-            (entity as any).Activo = true;
-            return await this.repository.save(entity);
-        } catch (error) {
-            if (error.code === '23505') {
-                throw new BadRequestException(error.detail);
-            }
-            this.logger.error(error);
-            throw new InternalServerErrorException('Unexpected error, check server logs');
-        }
+        const entity = this.repository.create(dto as DeepPartial<T>);
+        (entity as any).Id = uuid();
+        (entity as any).Activo = true;
+        return await this.repository.save(entity);
     }
 }

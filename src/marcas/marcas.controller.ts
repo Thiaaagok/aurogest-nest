@@ -33,7 +33,7 @@ export class MarcasController {
         return this.marcasService.editar(usuario, id);
     }
 
-    @Delete(':id')
+    @Delete(':id') 
     eliminarMarca(@Param('id', ParseUUIDPipe) id: string) {
         return this.marcasService.eliminar(id);
     }

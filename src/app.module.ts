@@ -11,6 +11,7 @@ import { ComprasModule } from './compras/compras.module';
 import { MarcasModule } from './marcas/marcas.module';
 import { ProductosTiposModule } from './productos-tipos/productos-tipos.module';
 import { CategoriasModule } from './categorias/categorias.module';
+import { ProductosStockModule } from './productos-stock/productos-stock.module';
 @Module({
   imports: [UsuariosModule,
     ConfigModule.forRoot(),
@@ -32,7 +33,8 @@ import { CategoriasModule } from './categorias/categorias.module';
     ComprasModule,
     MarcasModule,
     ProductosTiposModule,
-    CategoriasModule
+    CategoriasModule,
+    ProductosStockModule
   ],
   controllers: [],
   providers: [BaseService],

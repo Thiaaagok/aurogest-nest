@@ -1,9 +1,9 @@
 import { Categoria } from "src/categorias/entities/categoria.entity";
-import { Empresa } from "src/empresas/entities/empresa.entity";
 import { Marca } from "src/marcas/entities/marca.entity";
+import { ProductoStock } from "src/productos-stock/entities/productos-stock.entity";
 import { ProductoTipo } from "src/productos-tipos/entities/productos-tipo.entity";
 import { Proveedor } from "src/proveedores/entities/proveedor.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Producto {
@@ -18,10 +18,7 @@ export class Producto {
     Nombre: string;
 
     @Column('int', { default: 0 })
-    PrecioVenta: number;
-
-    @Column('int', { default: 0 })
-    PrecioCompra: number;
+    Precio: number;
 
     @Column('int', { default: 0 })
     CodigoBarra: string;
@@ -38,8 +35,8 @@ export class Producto {
     @JoinColumn({ name: 'categoriaProducto' })
     Categoria: Categoria;
 
-    @Column('int', { default: 0 })
-    Stock: number;
+    @OneToOne(() => ProductoStock, (productoStock) => productoStock.Producto)
+    Stock: ProductoStock;
 
     @Column('boolean')
     Activo: boolean;
