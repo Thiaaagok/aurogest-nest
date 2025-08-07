@@ -24,7 +24,7 @@ export class ProductosController {
     }
 
     @Patch(':id')
-    inactivarReactivarProducto(@Param('id', ParseUUIDPipe) id: string) {
+    ReactivarProducto(@Param('id', ParseUUIDPipe) id: string) {
         return this.productosService.reactivar(id);
     }
 

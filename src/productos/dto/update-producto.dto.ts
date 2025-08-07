@@ -19,10 +19,6 @@ export class EditarProductoDto {
   Precio?: number;
 
   @IsOptional()
-  @IsNumber()
-  CodigoBarra: number;
-
-  @IsOptional()
   Tipo?: ProductoTipo | null;
 
   @IsOptional()

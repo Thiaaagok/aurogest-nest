@@ -12,6 +12,7 @@ import { MarcasModule } from './marcas/marcas.module';
 import { ProductosTiposModule } from './productos-tipos/productos-tipos.module';
 import { CategoriasModule } from './categorias/categorias.module';
 import { ProductosStockModule } from './productos-stock/productos-stock.module';
+import { FacturasModule } from './facturas/facturas.module';
 @Module({
   imports: [UsuariosModule,
     ConfigModule.forRoot(),
@@ -34,7 +35,8 @@ import { ProductosStockModule } from './productos-stock/productos-stock.module';
     MarcasModule,
     ProductosTiposModule,
     CategoriasModule,
-    ProductosStockModule
+    ProductosStockModule,
+    FacturasModule
   ],
   controllers: [],
   providers: [BaseService],

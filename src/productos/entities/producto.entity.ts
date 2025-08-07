@@ -20,7 +20,7 @@ export class Producto {
     @Column('int', { default: 0 })
     Precio: number;
 
-    @Column('int', { default: 0 })
+    @Column('text', { unique: true , default: ''})
     CodigoBarra: string;
 
     @ManyToOne(() => ProductoTipo, { eager: true, nullable: true })

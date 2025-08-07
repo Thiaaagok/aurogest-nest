@@ -24,7 +24,7 @@ export class EmpresasController {
     }
 
     @Patch(':id')
-    inactivarReactivarEmpresa( @Param('id', ParseUUIDPipe) id: string){
+    ReactivarEmpresa( @Param('id', ParseUUIDPipe) id: string){
         return this.empresasService.reactivar(id);
     }
 

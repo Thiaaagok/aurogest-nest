@@ -8,11 +8,11 @@ export class CreateProductosStockDto {
     @IsNumber()
     StockActual: number;
     @IsNumber()
-    StockMinimo: number;
-    @IsNumber()
-    StockMaximo?: number;
+    StockMinimo?: number;
+    @IsOptional()
     @IsDate()
     UltimaActualizacion?: Date;
+    @IsOptional()
     @IsString()
     Observaciones?: string;
 }

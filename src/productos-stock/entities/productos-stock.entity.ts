@@ -17,14 +17,11 @@ export class ProductoStock {
     @Column('int')
     StockMinimo: number;
 
-    @Column('int', { nullable: true })
-    StockMaximo?: number;
-
     @Column({ type: 'timestamp', nullable: true })
     UltimaActualizacion?: Date;
 
     @Column({ default: true })
-    Activo?: boolean;
+    Activo: boolean;
 
     @Column({ type: 'text', nullable: true })
     Observaciones?: string;

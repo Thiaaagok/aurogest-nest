@@ -29,8 +29,8 @@ export class CrearProductoDto {
     Categoria?: Categoria | null;
     
     @IsOptional()
-    @IsNumber()
-    CodigoBarra: number;
+    @IsString()
+    CodigoBarra: string;
 
     @IsArray()
     @IsNotEmpty()

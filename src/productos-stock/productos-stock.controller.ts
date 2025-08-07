@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ParseUUIDPipe } from '@nestjs/common';
 import { ProductosStockService } from './productos-stock.service';
 import { CreateProductosStockDto } from './dto/create-productos-stock.dto';
 import { UpdateProductosStockDto } from './dto/update-productos-stock.dto';
 
-@Controller('productos-stock')
+@Controller('stock')
 export class ProductosStockController {
-  constructor(private readonly productosStockService: ProductosStockService) {}
+  constructor(private readonly productosStockService: ProductosStockService) { }
 
   @Post()
   create(@Body() createProductosStockDto: CreateProductosStockDto) {
-    return this.productosStockService.create(createProductosStockDto);
+    return this.productosStockService.crear(createProductosStockDto);
   }
 
   @Get()
   findAll() {
-    return this.productosStockService.findAll();
+    return this.productosStockService.obtenerTodos();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productosStockService.findOne(+id);
+    return this.productosStockService.obtenerPorId(id);
+  }
+
+  @Put(':id')
+  editarProducto(@Body() productoStock: UpdateProductosStockDto, @Param('id', ParseUUIDPipe) id: string) {
+    return this.productosStockService.editar(productoStock, id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductosStockDto: UpdateProductosStockDto) {
-    return this.productosStockService.update(+id, updateProductosStockDto);
+  ReactivarEmpresa(@Param('id', ParseUUIDPipe) id: string) {
+    return this.productosStockService.reactivar(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productosStockService.remove(+id);
+  eliminarProducto(@Param('id', ParseUUIDPipe) id: string) {
+    return this.productosStockService.eliminar(id);
   }
 }
