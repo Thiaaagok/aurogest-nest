@@ -8,10 +8,11 @@ import { Marca } from 'src/marcas/entities/marca.entity';
 import { Empresa } from 'src/empresas/entities/empresa.entity';
 import { ProductoTipo } from 'src/productos-tipos/entities/productos-tipo.entity';
 import { ProductoStock } from './entities/productos-stock.entity';
+import { ProductosService } from 'src/productos/productos.service';
 
 @Module({
   controllers: [ProductosStockController],
-  providers: [ProductosStockService],
+  providers: [ProductosStockService, ProductosService],
   imports: [
     TypeOrmModule.forFeature([Producto, Categoria, Marca, Empresa, ProductoTipo, ProductoStock])
   ]

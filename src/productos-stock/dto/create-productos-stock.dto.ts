@@ -7,8 +7,6 @@ export class CreateProductosStockDto {
     Producto: Producto;
     @IsNumber()
     StockActual: number;
-    @IsNumber()
-    StockMinimo?: number;
     @IsOptional()
     @IsDate()
     UltimaActualizacion?: Date;

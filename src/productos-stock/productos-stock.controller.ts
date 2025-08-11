@@ -22,6 +22,11 @@ export class ProductosStockController {
     return this.productosStockService.obtenerPorId(id);
   }
 
+  @Get('codigo-barra/:codigoBarra')
+  encontrarPorCodigoBarra(@Param('codigoBarra') codigoBarra: string) {
+    return this.productosStockService.obtenerPorCodigoBarra(codigoBarra);
+  }
+
   @Put(':id')
   editarProducto(@Body() productoStock: UpdateProductosStockDto, @Param('id', ParseUUIDPipe) id: string) {
     return this.productosStockService.editar(productoStock, id);

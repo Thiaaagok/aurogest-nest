@@ -18,7 +18,10 @@ export class Producto {
     Nombre: string;
 
     @Column('int', { default: 0 })
-    Precio: number;
+    PrecioCompra: number;
+
+    @Column('int', { default: 0 })
+    PrecioVenta: number;
 
     @Column('text', { unique: true , default: ''})
     CodigoBarra: string;

@@ -17,7 +17,11 @@ export class CrearProductoDto {
   
     @IsNotEmpty()
     @IsNumber()
-    Precio: number;
+    PrecioCompra: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    PrecioVenta: number;
   
     @IsOptional() 
     Tipo?: ProductoTipo | null;
