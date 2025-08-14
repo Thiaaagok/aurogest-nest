@@ -48,7 +48,7 @@ export class ProductosStockService extends BaseService<ProductoStock, CreateProd
   }
 
   public async obtenerPorCodigoBarra(codigoBarra: string): Promise<ProductoStock> {
-    const producto = this.productoService.obtenerPorCodioBarra(codigoBarra)
+    const producto = this.productoService.obtenerPorCodigoBarra(codigoBarra)
     const entity = await this.repository.findOne({
       where: { CodigoBarra: codigoBarra } as FindOptionsWhere<ProductoStock>,
     });

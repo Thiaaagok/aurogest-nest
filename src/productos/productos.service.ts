@@ -43,7 +43,7 @@ export class ProductosService extends BaseService<Producto, CrearProductoDto, Ed
     return this.repository.save(entity);
   }
 
-  public async obtenerPorCodioBarra(codigoBarra: string): Promise<Producto> {
+  public async obtenerPorCodigoBarra(codigoBarra: string): Promise<Producto> {
     const entity = await this.repository.findOneBy({ CodigoBarra: codigoBarra } as any);
     if (!entity) {
       throw new NotFoundException(`Producto con codigo de barra ${codigoBarra} no fue encontrado`);

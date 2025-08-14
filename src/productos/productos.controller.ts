@@ -17,6 +17,11 @@ export class ProductosController {
         return this.productosService.obtenerPorId(id);
     }
 
+    @Get('codigo-barra/:codigoBarra')
+    obtenerProductoPorCodigoBarra(@Param('codigoBarra') codigoBarra: string) {
+        return this.productosService.obtenerPorCodigoBarra(codigoBarra);
+    }
+
     @Post()
     @UsePipes(ValidationPipe)
     crearProducto(@Body() proveedor: CrearProductoDto) {
