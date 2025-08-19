@@ -1,5 +1,4 @@
-import { Empresa } from "src/empresas/entities/empresa.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Proveedor {

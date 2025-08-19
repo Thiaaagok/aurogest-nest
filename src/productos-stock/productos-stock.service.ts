@@ -58,4 +58,31 @@ export class ProductosStockService extends BaseService<ProductoStock, CreateProd
     }
     return entity;
   }
+
+  public async aumentarStock(id: string, stockAumentar: number): Promise<ProductoStock> {
+    const entity = await this.repository.findOne({
+      where: { Id: id } as FindOptionsWhere<ProductoStock>,
+    });
+
+    if (!entity) {
+      throw new NotFoundException(`El producto stock no fue encontrado`);
+    }
+
+    entity.StockActual = entity.StockActual + stockAumentar;
+
+    return this.repository.save(entity);
+  }
+
+  public async dismuirStock(id: string, stockDisminuir: number): Promise<ProductoStock> {
+    const entity = await this.repository.findOne({
+      where: { Id: id } as FindOptionsWhere<ProductoStock>,
+    });
+
+    if (!entity) {
+      throw new NotFoundException(`El producto stock no fue encontrado`);
+    }
+
+    entity.StockActual = entity.StockActual - stockDisminuir;
+    return this.repository.save(entity);
+  }
 }

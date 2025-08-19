@@ -1,4 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCompraDto } from './create-compra.dto';
+import { IsUUID } from 'class-validator';
+import { CompraCreateDto } from './create-compra.dto';
 
-export class UpdateCompraDto extends PartialType(CreateCompraDto) {}
+export class UpdateCompraDto extends PartialType(CompraCreateDto) {
+    @IsUUID()
+    id: string;
+}

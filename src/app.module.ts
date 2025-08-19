@@ -13,17 +13,18 @@ import { ProductosTiposModule } from './productos-tipos/productos-tipos.module';
 import { CategoriasModule } from './categorias/categorias.module';
 import { ProductosStockModule } from './productos-stock/productos-stock.module';
 import { FacturasModule } from './facturas/facturas.module';
+import { RegistrosModule } from './registros/registros.module';
 @Module({
   imports: [UsuariosModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DB_URL,
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT!,
-      database: process.env.DB_NAME,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
+      host: 'postgres.railway.internal',
+      url: 'postgresql://postgres:yjIXDjKDRwdsmUKBJLOEiBdZkDpfxSCZ@switchyard.proxy.rlwy.net:58672/railway',
+      port: 5432,
+      username: 'postgres',
+      password: 'yjIXDjKDRwdsmUKBJLOEiBdZkDpfxSCZ',
+      database: 'railway',
       autoLoadEntities: true,
       synchronize: true
     }),
@@ -36,9 +37,10 @@ import { FacturasModule } from './facturas/facturas.module';
     ProductosTiposModule,
     CategoriasModule,
     ProductosStockModule,
-    FacturasModule
+    FacturasModule,
+    RegistrosModule
   ],
   controllers: [],
   providers: [BaseService],
 })
-export class AppModule {}
+export class AppModule { }
