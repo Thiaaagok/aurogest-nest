@@ -11,9 +11,6 @@ export class Producto {
     @PrimaryGeneratedColumn('uuid')
     Id: string;
 
-    @Column('text', { unique: true })
-    Codigo: string;
-
     @Column('text')
     Nombre: string;
 

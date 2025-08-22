@@ -73,7 +73,7 @@ export class ProductosStockService extends BaseService<ProductoStock, CreateProd
     return this.repository.save(entity);
   }
 
-  public async dismuirStock(id: string, stockDisminuir: number): Promise<ProductoStock> {
+  public async disminuirStock(id: string, stockDisminuir: number): Promise<ProductoStock> {
     const entity = await this.repository.findOne({
       where: { Id: id } as FindOptionsWhere<ProductoStock>,
     });

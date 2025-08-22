@@ -1,34 +1,34 @@
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsUUID, IsNumber, Min, IsDate, ValidateNested } from 'class-validator';
+import { Producto } from 'src/productos/entities/producto.entity';
+import { Proveedor } from 'src/proveedores/entities/proveedor.entity';
 
 export class CompraCreateDto {
     @IsDate()
     @Type(() => Date)
-    fecha: Date;
+    Fecha: Date;
 
     @IsNumber()
     @Min(0)
-    total: number;
+    Total: number;
 
     @ValidateNested({ each: true })
     @Type(() => CompraItemCreateDto)
-    items: CompraItemCreateDto[];
+    Items: CompraItemCreateDto[];
 }
 
 
 export class CompraItemCreateDto {
-    @IsUUID()
     @IsNotEmpty()
-    productoId: string;
+    Producto: Producto;
 
     @IsNumber()
     @Min(1)
-    cantidad: number;
+    Cantidad: number;
 
     @IsNumber()
-    subtotal: number;
+    Subtotal: number;
 
-    @IsUUID()
     @IsOptional()
-    proveedorId?: string;
+    Proveedor?: Proveedor;
 }

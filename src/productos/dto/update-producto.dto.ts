@@ -6,9 +6,6 @@ import { ProductoTipo } from "src/productos-tipos/entities/productos-tipo.entity
 import { Proveedor } from "src/proveedores/entities/proveedor.entity";
 
 export class EditarProductoDto {
-  @IsOptional()
-  @IsString()
-  Codigo?: string;
 
   @IsOptional()
   @IsString()

@@ -7,40 +7,37 @@ import { Proveedor } from "src/proveedores/entities/proveedor.entity";
 
 export class CrearProductoDto {
 
-    @IsNotEmpty()
-    @IsString()
-    Codigo: string;
-  
-    @IsNotEmpty()
-    @IsString()
-    Nombre: string;
-  
-    @IsNotEmpty()
-    @IsNumber()
-    PrecioCompra: number;
 
-    @IsNotEmpty()
-    @IsNumber()
-    PrecioVenta: number;
-  
-    @IsOptional() 
-    Tipo?: ProductoTipo | null;
-    
-    @IsOptional()
-    Marca?: Marca | null;
-    
-    @IsOptional()
-    Categoria?: Categoria | null;
-    
-    @IsOptional()
-    @IsString()
-    CodigoBarra: string;
+  @IsNotEmpty()
+  @IsString()
+  Nombre: string;
 
-    @IsArray()
-    @IsNotEmpty()
-    Proveedores: Proveedor[];
+  @IsNotEmpty()
+  @IsNumber()
+  PrecioCompra: number;
 
-    @IsArray()
-    @IsOptional()
-    Stock: ProductoStock[]
-  }
+  @IsNotEmpty()
+  @IsNumber()
+  PrecioVenta: number;
+
+  @IsOptional()
+  Tipo?: ProductoTipo | null;
+
+  @IsOptional()
+  Marca?: Marca | null;
+
+  @IsOptional()
+  Categoria?: Categoria | null;
+
+  @IsOptional()
+  @IsString()
+  CodigoBarra: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  Proveedores: Proveedor[];
+
+  @IsArray()
+  @IsOptional()
+  Stock: ProductoStock[]
+}

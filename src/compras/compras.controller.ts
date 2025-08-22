@@ -1,34 +1,56 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Res } from '@nestjs/common';
 import { ComprasService } from './compras.service';
-import { CreateCompraDto } from './dto/create-compra.dto';
-import { UpdateCompraDto } from './dto/update-compra.dto';
+import { CompraCreateDto } from './dto/create-compra.dto';
+import { Compra } from './entities/compra.entity';
+import { Response } from 'express';
 
 @Controller('compras')
 export class ComprasController {
-  constructor(private readonly comprasService: ComprasService) {}
+  constructor(private readonly comprasService: ComprasService) { }
 
   @Post()
-  create(@Body() createCompraDto: CreateCompraDto) {
-    return this.comprasService.create(createCompraDto);
+  create(@Body() comprasServiceStockDto: CompraCreateDto) {
+    return this.comprasService.crear(comprasServiceStockDto);
   }
 
   @Get()
   findAll() {
-    return this.comprasService.findAll();
+    return this.comprasService.obtenerTodos();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.comprasService.findOne(+id);
+    return this.comprasService.obtenerPorId(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompraDto: UpdateCompraDto) {
-    return this.comprasService.update(+id, updateCompraDto);
+  @Get('remito/:id')
+  async descargarRemito(@Param('id') id: string, @Res() res: Response) {
+    const compra: Compra = await this.comprasService.obtenerPorId(id);
+    if (!compra) {
+      return res.status(404).send('Compra no encontrada');
+    }
+    const pdfBuffer = await this.comprasService.generarRemito(compra);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=remito_Prueba.pdf`);
+    res.end(pdfBuffer);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.comprasService.remove(+id);
+  @Get('imprimir-remito/:id')
+  async imprimirRemito(@Param('id') id: string) {
+    try {
+      // 1️⃣ Obtenemos la compra desde la base de datos
+      const compra = await this.comprasService.obtenerPorId(id);
+      if (!compra) {
+        return { error: 'Compra no encontrada' };
+      }
+
+      // 2️⃣ Llamamos al servicio que imprime en POS58
+      await this.comprasService.imprimirRemitoPOS58(compra);
+
+      return { mensaje: 'Remito enviado a la impresora POS58 correctamente' };
+    } catch (error) {
+      console.error(error);
+      return { error: 'Error al imprimir remito' };
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { isBoolean, IsDate, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
+import { IsDate, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
 import { Producto } from "src/productos/entities/producto.entity";
 
 export class CreateProductosStockDto {

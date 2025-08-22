@@ -1,37 +1,39 @@
+import { Producto } from 'src/productos/entities/producto.entity';
+import { Proveedor } from 'src/proveedores/entities/proveedor.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('compras')
 export class Compra {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    Id: string;
 
     @Column()
-    fecha: Date;
+    Fecha: Date;
 
     @Column({ type: 'decimal', precision: 10, scale: 2 })
-    total: number;
+    Total: number;
 
-    @OneToMany(() => CompraItem, (item) => item.compra, { cascade: true, eager: true })
-    items: CompraItem[];
+    @OneToMany(() => CompraItem, (item) => item.Compra, { cascade: true, eager: true })
+    Items: CompraItem[];
 }
 
 @Entity('compra_items')
 export class CompraItem {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    Id: string;
 
-    @ManyToOne(() => Compra, (compra) => compra.items, { onDelete: 'CASCADE' })
-    compra: Compra;
+    @ManyToOne(() => Compra, (compra) => compra.Items, { onDelete: 'CASCADE'})
+    Compra: Compra;
 
-    @Column()
-    productoId: string; // FK hacia Producto
+    @ManyToOne(() => Producto, { eager: true})
+    Producto: Producto;
 
     @Column({ type: 'int' })
-    cantidad: number;
+    Cantidad: number;
 
     @Column({ type: 'decimal', precision: 10, scale: 2 })
-    subtotal: number;
+    Subtotal: number;
 
-    @Column({ nullable: true })
-    proveedorId?: string; // FK hacia Proveedor
+    @ManyToOne(() => Proveedor, { eager: true, nullable: true })
+    Proveedor: Proveedor;
 }
