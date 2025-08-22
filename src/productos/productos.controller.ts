@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, ValidationPipe, UsePipes, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, ValidationPipe, UsePipes, Put, ParseIntPipe } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CrearProductoDto } from './dto/create-producto.dto';
 import { EditarProductoDto } from './dto/update-producto.dto';
@@ -36,6 +36,15 @@ export class ProductosController {
     @Put(':id')
     editarProducto(@Body() proveedor: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
         return this.productosService.editar(proveedor, id);
+    }
+
+    @Put('editar-precio/:tipo/:id')
+    editarPrecio(
+        @Param('tipo') tipo: 'COMPRA' | 'VENTA',
+        @Param('id', ParseUUIDPipe) id: string,
+        @Body('nuevoPrecio', ParseIntPipe) nuevoPrecio: number
+    ) {
+        return this.productosService.editarPrecio(nuevoPrecio, id, tipo);
     }
 
     @Delete(':id')

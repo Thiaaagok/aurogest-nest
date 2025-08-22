@@ -9,12 +9,14 @@ import { Empresa } from 'src/empresas/entities/empresa.entity';
 import { ProductoTipo } from 'src/productos-tipos/entities/productos-tipo.entity';
 import { ProductoStock } from './entities/productos-stock.entity';
 import { ProductosService } from 'src/productos/productos.service';
+import { RegistrosModule } from 'src/registros/registros.module';
 
 @Module({
   controllers: [ProductosStockController],
   providers: [ProductosStockService, ProductosService],
   imports: [
-    TypeOrmModule.forFeature([Producto, Categoria, Marca, Empresa, ProductoTipo, ProductoStock])
+    TypeOrmModule.forFeature([Producto, Categoria, Marca, Empresa, ProductoTipo, ProductoStock]),
+    RegistrosModule
   ]
 })
 export class ProductosStockModule { }

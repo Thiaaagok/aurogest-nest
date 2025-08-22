@@ -182,10 +182,9 @@ export class ComprasService {
       documento.table(table, {
         prepareHeader: () => documento.fontSize(6),
         prepareRow: (row, i) => documento.fontSize(5),
-        width: 130  // Ajusta ancho máximo de la tabla a casi todo el papel
+        width: 130  
       });
 
-      // --- Generar buffer ---
       const buffer: Buffer[] = [];
       documento.on('data', buffer.push.bind(buffer));
       documento.on('end', () => resolve(Buffer.concat(buffer)));

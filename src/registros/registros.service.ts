@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRegistroDto } from './dto/create-registro.dto';
-import { UpdateRegistroDto } from './dto/update-registro.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeepPartial, Repository } from 'typeorm';
+import { RegistroActualizacionPrecio } from './entities/registro.entity';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class RegistrosService {
-  create(createRegistroDto: CreateRegistroDto) {
-    return 'This action adds a new registro';
+
+  constructor(
+    @InjectRepository(RegistroActualizacionPrecio)
+    protected readonly registrosActualizacionPrecioRepo: Repository<RegistroActualizacionPrecio>,
+  ) {
   }
 
   findAll() {
@@ -16,11 +21,26 @@ export class RegistrosService {
     return `This action returns a #${id} registro`;
   }
 
-  update(id: number, updateRegistroDto: UpdateRegistroDto) {
-    return `This action updates a #${id} registro`;
+  async registrarEdicionPrecioCompra(registro: RegistroActualizacionPrecio) {
+    const entity = this.registrosActualizacionPrecioRepo.create(registro as DeepPartial<RegistroActualizacionPrecio>);
+    (entity as any).Id = uuid();
+    (entity as any).Tipo = 'COMPRA';
+    return await this.registrosActualizacionPrecioRepo.save(entity);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} registro`;
+  async registrarEdicionPrecioVenta(registro: RegistroActualizacionPrecio) {
+    const entity = this.registrosActualizacionPrecioRepo.create(registro as DeepPartial<RegistroActualizacionPrecio>);
+    (entity as any).Id = uuid();
+    (entity as any).Tipo = 'VENTA';
+    return await this.registrosActualizacionPrecioRepo.save(entity);
+  }
+
+  async obtenerRegistrosPorProducto(productoId: string) {
+    return await this.registrosActualizacionPrecioRepo.find({
+      where: {
+        Producto: { Id: productoId },
+      },
+      order: { FechaActualizacion: 'DESC' },
+    });
   }
 }
