@@ -14,6 +14,7 @@ import { CategoriasModule } from './categorias/categorias.module';
 import { ProductosStockModule } from './productos-stock/productos-stock.module';
 import { FacturasModule } from './facturas/facturas.module';
 import { RegistrosModule } from './registros/registros.module';
+import { VentasModule } from './ventas/ventas.module';
 @Module({
   imports: [UsuariosModule,
     ConfigModule.forRoot(),
@@ -38,7 +39,8 @@ import { RegistrosModule } from './registros/registros.module';
     CategoriasModule,
     ProductosStockModule,
     FacturasModule,
-    RegistrosModule
+    RegistrosModule,
+    VentasModule
   ],
   controllers: [],
   providers: [BaseService],
