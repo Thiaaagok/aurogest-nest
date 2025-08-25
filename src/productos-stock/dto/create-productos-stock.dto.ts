@@ -6,7 +6,7 @@ export class CreateProductosStockDto {
     @IsObject()
     Producto: Producto;
     @IsNumber()
-    StockActual: number;
+    StockActualTotal: number;
     @IsOptional()
     @IsDate()
     UltimaActualizacion?: Date;
