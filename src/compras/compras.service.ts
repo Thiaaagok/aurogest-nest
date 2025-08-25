@@ -68,7 +68,7 @@ export class ComprasService {
 
       const rows: (string | number)[][] = compra.Items.map((item, index) => [
         index + 1,
-        item.Producto?.Nombre || 'Producto',
+        item.Producto?.Descripcion || 'Producto',
         item.Cantidad,
         item.Producto?.PrecioCompra || 0,
         Number(item.Subtotal),
@@ -122,7 +122,7 @@ export class ComprasService {
 
       compra.Items.forEach((item, index) => {
         const linea = `${(index + 1).toString().padEnd(3)} ` +
-          `${item.Producto.Nombre.padEnd(15).slice(0, 15)} ` +
+          `${item.Producto.Descripcion.padEnd(15).slice(0, 15)} ` +
           `${item.Cantidad.toString().padStart(3)} ` +
           `${item.Producto.PrecioCompra.toString().padStart(5)} ` +
           `${Number(item.Subtotal).toFixed(2).padStart(6)}`;
@@ -165,7 +165,7 @@ export class ComprasService {
       // --- Tabla de productos ---
       const rows: (string | number)[][] = compra.Items.map((item, index) => [
         index + 1,
-        item.Producto?.Nombre || 'Producto',
+        item.Producto?.Descripcion || 'Producto',
         item.Cantidad,
         item.Producto?.PrecioCompra || 0,
         Number(item.Subtotal),

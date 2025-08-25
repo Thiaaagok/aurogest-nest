@@ -12,7 +12,10 @@ export class Producto {
     Id: string;
 
     @Column('text')
-    Nombre: string;
+    Codigo: string;
+
+    @Column('text')
+    Descripcion: string;
 
     @Column('int', { default: 0 })
     PrecioCompra: number;
@@ -20,7 +23,7 @@ export class Producto {
     @Column('int', { default: 0 })
     PrecioVenta: number;
 
-    @Column('text', { unique: true , default: ''})
+    @Column('text', { unique: true, default: '' })
     CodigoBarra: string;
 
     @ManyToOne(() => ProductoTipo, { eager: true, nullable: true })

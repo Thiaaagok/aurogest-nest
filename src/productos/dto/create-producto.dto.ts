@@ -7,10 +7,13 @@ import { Proveedor } from "src/proveedores/entities/proveedor.entity";
 
 export class CrearProductoDto {
 
+  @IsNotEmpty()
+  @IsString()
+  Codigo: string;
 
   @IsNotEmpty()
   @IsString()
-  Nombre: string;
+  Descripcion: string;
 
   @IsNotEmpty()
   @IsNumber()
@@ -37,7 +40,4 @@ export class CrearProductoDto {
   @IsNotEmpty()
   Proveedores: Proveedor[];
 
-  @IsArray()
-  @IsOptional()
-  Stock: ProductoStock[]
 }
