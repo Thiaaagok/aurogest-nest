@@ -12,7 +12,7 @@ export class ProductoStock {
     Producto: Producto;
 
     @Column('int')
-    StockActual: number;
+    StockActualTotal: number;
     
     @Column({ type: 'timestamp', nullable: true })
     UltimaActualizacion?: Date;

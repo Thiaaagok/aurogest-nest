@@ -68,7 +68,7 @@ export class ProductosStockService extends BaseService<ProductoStock, CreateProd
       throw new NotFoundException(`El producto stock no fue encontrado`);
     }
 
-    entity.StockActual = entity.StockActual + stockAumentar;
+    entity.StockActualTotal = entity.StockActualTotal + stockAumentar;
 
     return this.repository.save(entity);
   }
@@ -82,7 +82,7 @@ export class ProductosStockService extends BaseService<ProductoStock, CreateProd
       throw new NotFoundException(`El producto stock no fue encontrado`);
     }
 
-    entity.StockActual = entity.StockActual - stockDisminuir;
+    entity.StockActualTotal = entity.StockActualTotal - stockDisminuir;
     return this.repository.save(entity);
   }
 }
