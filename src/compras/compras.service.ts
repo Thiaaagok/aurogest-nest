@@ -4,6 +4,7 @@ import { Compra } from './entities/compra.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompraCreateDto } from './dto/create-compra.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
 const PDFDocument = require('pdfkit-table');
 const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 
@@ -16,12 +17,15 @@ export class ComprasService {
   constructor(
     @InjectRepository(Compra)
     protected readonly comprasRepo: Repository<Compra>,
+    private readonly usuariosService: UsuariosService
   ) {
     this.logger = new Logger(`compraService`);
   }
 
   public obtenerTodos() {
-    return this.comprasRepo.find({});
+    return this.comprasRepo.find({
+      relations: ['Usuario', 'Items', 'Items.Producto'],
+    });
   }
 
   public async obtenerPorId(id: string): Promise<Compra> {
@@ -34,16 +38,24 @@ export class ComprasService {
 
   public async crear(dto: CompraCreateDto): Promise<Compra> {
     try {
-      const entity = this.comprasRepo.create(dto as DeepPartial<Compra>);
+      const usuario = await this.usuariosService.obtenerPorId(dto.UsuarioId);
+      if (!usuario) {
+        throw new BadRequestException('Usuario no encontrado');
+      }
+      const entity = this.comprasRepo.create({
+        ...dto,
+        Usuario: usuario, 
+      } as DeepPartial<Compra>);
+
       (entity as any).Id = uuidv4();
       (entity as any).Activo = true;
-
+      
       return await this.comprasRepo.save(entity);
     } catch (error) {
       if (error.code === '23505') {
         throw new BadRequestException(error.detail);
       }
-      this.logger.error(error);
+      console.error(error);
       throw new InternalServerErrorException('Error inesperado, revisar el servicio de logs');
     }
   }
@@ -148,7 +160,7 @@ export class ComprasService {
   async generarRemito48mm(compra: Compra): Promise<Buffer> {
     const pdfbuffer: Buffer = await new Promise(resolve => {
       const documento = new PDFDocument({
-        size: [136, 3401],  
+        size: [136, 3401],
         margin: 5,
         bufferPages: true
       });
@@ -182,7 +194,7 @@ export class ComprasService {
       documento.table(table, {
         prepareHeader: () => documento.fontSize(6),
         prepareRow: (row, i) => documento.fontSize(5),
-        width: 130  
+        width: 130
       });
 
       const buffer: Buffer[] = [];
@@ -193,5 +205,38 @@ export class ComprasService {
     });
 
     return pdfbuffer;
+  }
+
+  async buscarCompras(filtros: {
+    fechaDesde?: string;
+    fechaHasta?: string;
+    usuarioId?: string;
+    productoId?: string;
+  }) {
+    const { fechaDesde, fechaHasta, usuarioId, productoId } = filtros;
+
+    const query = this.comprasRepo
+      .createQueryBuilder('compra')
+      .leftJoinAndSelect('compra.Usuario', 'usuario')
+      .leftJoinAndSelect('compra.Items', 'items')
+      .leftJoinAndSelect('items.Producto', 'producto');
+
+
+    if (fechaDesde && fechaHasta) {
+      query.andWhere('compra.Fecha BETWEEN :fechaDesde AND :fechaHasta', {
+        fechaDesde,
+        fechaHasta,
+      });
+    }
+
+    if (usuarioId) {
+      query.andWhere('usuario.Id = :usuarioId', { usuarioId });
+    }
+
+    if (productoId) {
+      query.andWhere('producto.Id = :productoId', { productoId });
+    }
+
+    return query.getMany();
   }
 }

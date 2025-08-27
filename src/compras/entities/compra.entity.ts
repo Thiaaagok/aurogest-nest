@@ -1,5 +1,6 @@
 import { Producto } from 'src/productos/entities/producto.entity';
 import { Proveedor } from 'src/proveedores/entities/proveedor.entity';
+import { Usuario } from 'src/usuarios/model/usuario.model';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('compras')
@@ -13,6 +14,9 @@ export class Compra {
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     Total: number;
 
+    @ManyToOne(() => Usuario, { eager: true })
+    Usuario: Usuario;
+
     @OneToMany(() => CompraItem, (item) => item.Compra, { cascade: true, eager: true })
     Items: CompraItem[];
 }
@@ -22,10 +26,10 @@ export class CompraItem {
     @PrimaryGeneratedColumn('uuid')
     Id: string;
 
-    @ManyToOne(() => Compra, (compra) => compra.Items, { onDelete: 'CASCADE'})
+    @ManyToOne(() => Compra, (compra) => compra.Items, { onDelete: 'CASCADE' })
     Compra: Compra;
 
-    @ManyToOne(() => Producto, { eager: true})
+    @ManyToOne(() => Producto, { eager: true })
     Producto: Producto;
 
     @Column({ type: 'int' })

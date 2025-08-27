@@ -7,12 +7,14 @@ import { Categoria } from 'src/categorias/entities/categoria.entity';
 import { Marca } from 'src/marcas/entities/marca.entity';
 import { ProductoTipo } from 'src/productos-tipos/entities/productos-tipo.entity';
 import { Compra, CompraItem } from './entities/compra.entity';
+import { UsuariosModule } from 'src/usuarios/usuarios.module';
 
 @Module({
   controllers: [ComprasController],
   providers: [ComprasService],
   imports: [
-    TypeOrmModule.forFeature([Producto, Categoria, Marca, ProductoTipo, Compra, CompraItem])
+    TypeOrmModule.forFeature([Producto, Categoria, Marca, ProductoTipo, Compra, CompraItem]),
+    UsuariosModule
   ]
 })
 export class ComprasModule { }

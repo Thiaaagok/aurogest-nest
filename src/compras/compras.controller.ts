@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Res, Query } from '@nestjs/common';
 import { ComprasService } from './compras.service';
 import { CompraCreateDto } from './dto/create-compra.dto';
 import { Compra } from './entities/compra.entity';
@@ -13,6 +13,20 @@ export class ComprasController {
     return this.comprasService.crear(comprasServiceStockDto);
   }
 
+  @Get('buscar')
+  buscarCompras(
+    @Query('fechaDesde') fechaDesde: string,
+    @Query('fechaHasta') fechaHasta: string,
+    @Query('usuarioId') usuarioId?: string,
+    @Query('productoId') productoId?: string,
+  ) {
+    return this.comprasService.buscarCompras({
+      fechaDesde,
+      fechaHasta,
+      usuarioId,
+      productoId,
+    });
+  }
   @Get()
   findAll() {
     return this.comprasService.obtenerTodos();
