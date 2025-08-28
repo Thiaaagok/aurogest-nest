@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateProductosStockDto } from './dto/create-productos-stock.dto';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { CrearProductosStockDto } from './dto/create-productos-stock.dto';
 import { UpdateProductosStockDto } from './dto/update-productos-stock.dto';
 import { BaseService } from 'src/base/base.service';
 import { ProductoStock } from './entities/productos-stock.entity';
@@ -8,12 +8,12 @@ import { FindOptionsWhere, Repository } from 'typeorm';
 import { ProductosService } from 'src/productos/productos.service';
 
 @Injectable()
-export class ProductosStockService extends BaseService<ProductoStock, CreateProductosStockDto, UpdateProductosStockDto> {
-  productoService: ProductosService;
+export class ProductosStockService extends BaseService<ProductoStock, CrearProductosStockDto, UpdateProductosStockDto> {
   constructor(
     @InjectRepository(ProductoStock)
     productosStockRepo: Repository<ProductoStock>,
-    productoService: ProductosService
+    @Inject(forwardRef(() => ProductosService))
+    private readonly productoService: ProductosService
   ) {
     super(productosStockRepo, 'ProductosStock');
     this.productoService = productoService;

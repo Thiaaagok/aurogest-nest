@@ -24,8 +24,8 @@ export class ProductosController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    crearProducto(@Body() proveedor: CrearProductoDto) {
-        return this.productosService.crear(proveedor);
+    crearProducto(@Body() producto: CrearProductoDto) {
+        return this.productosService.crear(producto, '123');
     }
 
     @Patch(':id')
@@ -34,8 +34,8 @@ export class ProductosController {
     }
 
     @Put(':id')
-    editarProducto(@Body() proveedor: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
-        return this.productosService.editar(proveedor, id);
+    editarProducto(@Body() producto: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
+        return this.productosService.editar(producto, id);
     }
 
     @Put('editar-precio/:tipo/:id')

@@ -1,7 +1,7 @@
-import { IsDate, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, IsUUID } from "class-validator";
 import { Producto } from "src/productos/entities/producto.entity";
 
-export class CreateProductosStockDto {
+export class CrearProductosStockDto {
 
     @IsObject()
     Producto: Producto;
@@ -13,4 +13,22 @@ export class CreateProductosStockDto {
     @IsOptional()
     @IsString()
     Observaciones?: string;
+}
+
+
+export class CrearProductoStockLote {
+
+    @IsUUID()
+    Id: string;
+
+    @IsDate()
+    FechaIngreso: Date;
+
+    @IsNotEmpty()
+    @IsNumber()
+    PrecioUnitario: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    CantidadActual: number;
 }

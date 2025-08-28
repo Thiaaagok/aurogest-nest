@@ -1,7 +1,8 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsOptional, IsUUID, IsNumber, Min, IsDate, ValidateNested, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsUUID, IsNumber, Min, IsDate, ValidateNested, IsString, IsArray } from 'class-validator';
 import { Producto } from 'src/productos/entities/producto.entity';
 import { Proveedor } from 'src/proveedores/entities/proveedor.entity';
+import { Column } from 'typeorm';
 
 export class CompraCreateDto {
     @IsDate()
@@ -18,8 +19,12 @@ export class CompraCreateDto {
     @ValidateNested({ each: true })
     @Type(() => CompraItemCreateDto)
     Items: CompraItemCreateDto[];
+
+    @IsArray()
+    @Column('text', { array: true, nullable: false })
+    ProductosId: string[];
 }
- 
+
 
 export class CompraItemCreateDto {
     @IsNotEmpty()
