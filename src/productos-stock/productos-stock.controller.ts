@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Put, ParseUUIDPipe } from '@nestjs/common';
 import { ProductosStockService } from './productos-stock.service';
-import { CreateProductosStockDto } from './dto/create-productos-stock.dto';
+import { CrearProductosStockDto } from './dto/create-productos-stock.dto';
 import { UpdateProductosStockDto } from './dto/update-productos-stock.dto';
 
 @Controller('stock')
@@ -8,7 +8,7 @@ export class ProductosStockController {
   constructor(private readonly productosStockService: ProductosStockService) { }
 
   @Post()
-  create(@Body() createProductosStockDto: CreateProductosStockDto) {
+  create(@Body() createProductosStockDto: CrearProductosStockDto) {
     return this.productosStockService.crear(createProductosStockDto);
   }
 

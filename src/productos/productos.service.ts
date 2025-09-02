@@ -1,25 +1,44 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { BaseService } from 'src/base/base.service';
 import { Producto } from './entities/producto.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { CrearProductoDto } from './dto/create-producto.dto';
 import { EditarProductoDto } from './dto/update-producto.dto';
 import { RegistroActualizacionPrecio } from 'src/registros/entities/registro.entity';
 import { RegistrosService } from 'src/registros/registros.service';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { v4 as uuidv4 } from 'uuid';
+import { ProductosStockService } from '../productos-stock/productos-stock.service';
+import { CrearProductosStockDto } from 'src/productos-stock/dto/create-productos-stock.dto';
 
 @Injectable()
-export class ProductosService extends BaseService<Producto, CrearProductoDto, EditarProductoDto> {
+export class ProductosService {
   constructor(
     @InjectRepository(Producto)
-    productosRepo: Repository<Producto>,
+    protected readonly productosRepo: Repository<Producto>,
     private readonly registrosService: RegistrosService,
+    private readonly usuariosService: UsuariosService,
+    @Inject(forwardRef(() => ProductosStockService))
+    private readonly productosStockService: ProductosStockService,
   ) {
-    super(productosRepo, 'Productos');
+
+  }
+
+  public obtenerTodos() {
+    return this.productosRepo.find({});
+  }
+
+  public async obtenerPorId(id: string): Promise<Producto> {
+    const entity = await this.productosRepo.findOneBy({ Id: id } as any);
+    if (!entity) {
+      throw new NotFoundException(`$Producto con id ${id} no fue encontrado`);
+    }
+    return entity;
   }
 
   public async reactivar(id: string): Promise<Producto> {
-    const entity = await this.repository.findOne({
+    const entity = await this.productosRepo.findOne({
       where: { Id: id } as FindOptionsWhere<Producto>,
     });
 
@@ -29,11 +48,11 @@ export class ProductosService extends BaseService<Producto, CrearProductoDto, Ed
 
     entity.Activo = true;
 
-    return this.repository.save(entity);
+    return this.productosRepo.save(entity);
   }
 
   public async eliminar(id: string): Promise<Producto> {
-    const entity = await this.repository.findOne({
+    const entity = await this.productosRepo.findOne({
       where: { Id: id } as FindOptionsWhere<Producto>,
     });
 
@@ -43,11 +62,11 @@ export class ProductosService extends BaseService<Producto, CrearProductoDto, Ed
 
     entity.Activo = false;
 
-    return this.repository.save(entity);
+    return this.productosRepo.save(entity);
   }
 
   public async obtenerPorCodigoBarra(codigoBarra: string): Promise<Producto> {
-    const entity = await this.repository.findOneBy({ CodigoBarra: codigoBarra } as any);
+    const entity = await this.productosRepo.findOneBy({ CodigoBarra: codigoBarra } as any);
     if (!entity) {
       throw new NotFoundException(`Producto con codigo de barra ${codigoBarra} no fue encontrado`);
     }
@@ -55,7 +74,7 @@ export class ProductosService extends BaseService<Producto, CrearProductoDto, Ed
   }
 
   public async editarPrecio(nuevoPrecio: number, id: string, tipo: 'COMPRA' | 'VENTA') {
-    const producto = await this.repository.findOne({
+    const producto = await this.productosRepo.findOne({
       where: { Id: id } as FindOptionsWhere<Producto>,
     });
 
@@ -84,6 +103,54 @@ export class ProductosService extends BaseService<Producto, CrearProductoDto, Ed
       throw new BadRequestException('Tipo debe ser COMPRA o VENTA');
     }
 
-    return this.repository.save(producto);
+    return this.productosRepo.save(producto);
   }
+
+  public async crear(dto: CrearProductoDto, UsuarioId: string): Promise<Producto> {
+    try {
+      /* const usuario = await this.usuariosService.obtenerPorId(UsuarioId);
+      if (!usuario) {
+        throw new BadRequestException('Usuario no encontrado');
+      } */
+
+      const entity = this.productosRepo.create({
+        ...dto,
+      } as DeepPartial<Producto>);
+
+      (entity as any).Id = uuidv4();
+      (entity as any).Activo = true;
+
+      const response = await this.productosRepo.save(entity);
+
+      if (response) {
+        const dtoStock = new CrearProductosStockDto();
+        dtoStock.StockActualTotal = 0;
+        dtoStock.Producto = response;
+
+        await this.productosStockService.crear(dtoStock);
+      }
+
+      return response;
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new BadRequestException(error.detail);
+      }
+      console.error(error);
+      throw new InternalServerErrorException('Error inesperado, revisar el servicio de productos');
+    }
+  }
+
+  public async editar(dto: EditarProductoDto, id: string): Promise<Producto> {
+    const entity = await this.productosRepo.preload({
+      Id: id,
+      ...dto,
+    } as DeepPartial<Producto>);
+
+    if (!entity) {
+      throw new NotFoundException(`Producto con el id ${id} no fue encontrado`);
+    }
+
+    return this.productosRepo.save(entity);
+  }
+
 }

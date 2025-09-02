@@ -19,6 +19,8 @@ export class Compra {
 
     @OneToMany(() => CompraItem, (item) => item.Compra, { cascade: true, eager: true })
     Items: CompraItem[];
+
+
 }
 
 @Entity('compra_items')

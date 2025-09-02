@@ -40,17 +40,6 @@ export class ProductosController {
             }),
         }),
     )
-    @UsePipes(ValidationPipe)
-    async crearProducto(
-        @UploadedFiles() files: { imagenes?: Express.Multer.File[] },
-        @Body() data: CrearProductoDto,
-    ): Promise<Producto> {
-        const imagenes = files?.imagenes?.map((f) => `/uploads/productos/${f.filename}`) || [];
-        return this.productosService.crear({
-            ...data,
-            Imagenes: imagenes,
-        });
-    }
 
     @Patch(':id')
     ReactivarProducto(@Param('id', ParseUUIDPipe) id: string) {
@@ -58,8 +47,8 @@ export class ProductosController {
     }
 
     @Put(':id')
-    editarProducto(@Body() proveedor: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
-        return this.productosService.editar(proveedor, id);
+    editarProducto(@Body() producto: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
+        return this.productosService.editar(producto, id);
     }
 
     @Put('editar-precio/:tipo/:id')
