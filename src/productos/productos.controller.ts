@@ -1,11 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, ValidationPipe, UsePipes, Put, ParseIntPipe, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, ValidationPipe, UsePipes, Put, ParseIntPipe, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CrearProductoDto } from './dto/create-producto.dto';
 import { EditarProductoDto } from './dto/update-producto.dto';
-import { Producto } from './entities/producto.entity';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller('productos')
 export class ProductosController {
@@ -27,28 +26,45 @@ export class ProductosController {
     }
 
     @Post()
+    @UsePipes(ValidationPipe)
+    crearProducto(@Body() nuevoProducto: CrearProductoDto) {
+        return this.productosService.crear(nuevoProducto);
+    }
+
+    @Post('upload-multiple')
     @UseInterceptors(
-        FileFieldsInterceptor([{ name: 'imagenes', maxCount: 10 }], {
+        FilesInterceptor('imagenes', 10, {
             storage: diskStorage({
-                destination: './uploads/productos',
-                filename: (req, file, cb) => {
-                    const nombreArchivo = `${Date.now()}-${Math.round(
-                        Math.random() * 1e9,
-                    )}${extname(file.originalname)}`;
-                    cb(null, nombreArchivo);
+                destination: './uploads',
+                filename: (_, file, cb) => {
+                    const filename = uuidv4() + '_' + file.originalname;
+                    cb(null, filename);
                 },
             }),
+            fileFilter: (_, file, cb) => {
+                if (!file.mimetype.startsWith('image/')) {
+                    return cb(new Error('Solo se permiten imágenes'), false);
+                }
+                cb(null, true);
+            },
         }),
     )
-
+    async uploadMultiple(@UploadedFiles() files: Express.Multer.File[]) {
+        // Cambiamos a URLs absolutas apuntando al backend
+        const urls = files.map(
+            file => `http://localhost:3000/uploads/${file.filename}`
+        );
+        return { urls };
+    }
+    
     @Patch(':id')
     ReactivarProducto(@Param('id', ParseUUIDPipe) id: string) {
         return this.productosService.reactivar(id);
     }
 
     @Put(':id')
-    editarProducto(@Body() producto: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
-        return this.productosService.editar(producto, id);
+    editarProducto(@Body() proveedor: EditarProductoDto, @Param('id', ParseUUIDPipe) id: string) {
+        return this.productosService.editar(proveedor, id);
     }
 
     @Put('editar-precio/:tipo/:id')

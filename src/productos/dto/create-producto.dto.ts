@@ -41,6 +41,6 @@ export class CrearProductoDto {
   Proveedores: Proveedor[];
 
   @IsArray()
-  @IsNotEmpty()
+  @IsOptional()
   Imagenes: string[];
 }

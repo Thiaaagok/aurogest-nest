@@ -106,13 +106,9 @@ export class ProductosService {
     return this.productosRepo.save(producto);
   }
 
-  public async crear(dto: CrearProductoDto, UsuarioId: string): Promise<Producto> {
+  public async crear(dto: CrearProductoDto,): Promise<Producto> {
     try {
-      /* const usuario = await this.usuariosService.obtenerPorId(UsuarioId);
-      if (!usuario) {
-        throw new BadRequestException('Usuario no encontrado');
-      } */
-
+      
       const entity = this.productosRepo.create({
         ...dto,
       } as DeepPartial<Producto>);

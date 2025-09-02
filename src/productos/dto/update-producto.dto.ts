@@ -1,7 +1,6 @@
 import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Categoria } from "src/categorias/entities/categoria.entity";
 import { Marca } from "src/marcas/entities/marca.entity";
-import { ProductoStock } from "src/productos-stock/entities/productos-stock.entity";
 import { ProductoTipo } from "src/productos-tipos/entities/productos-tipo.entity";
 import { Proveedor } from "src/proveedores/entities/proveedor.entity";
 
@@ -34,9 +33,5 @@ export class EditarProductoDto {
 
   @IsArray()
   @IsOptional()
-  Stock: ProductoStock[]
-
-  @IsArray()
-  @IsNotEmpty()
   Imagenes: string[];
 }
