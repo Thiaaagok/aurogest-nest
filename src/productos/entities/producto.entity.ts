@@ -47,4 +47,7 @@ export class Producto {
     @ManyToMany(() => Proveedor, { eager: true })
     @JoinTable()
     Proveedores: Proveedor[];
+
+    @Column({ type: 'text', array: true, nullable: true })
+    Imagenes: string[];
 }

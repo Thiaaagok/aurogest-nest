@@ -35,4 +35,8 @@ export class EditarProductoDto {
   @IsArray()
   @IsOptional()
   Stock: ProductoStock[]
+
+  @IsArray()
+  @IsNotEmpty()
+  Imagenes: string[];
 }
