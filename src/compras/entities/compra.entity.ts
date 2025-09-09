@@ -20,7 +20,6 @@ export class Compra {
     @OneToMany(() => CompraItem, (item) => item.Compra, { cascade: true, eager: true })
     Items: CompraItem[];
 
-
 }
 
 @Entity('compra_items')
@@ -31,7 +30,7 @@ export class CompraItem {
     @ManyToOne(() => Compra, (compra) => compra.Items, { onDelete: 'CASCADE' })
     Compra: Compra;
 
-    @ManyToOne(() => Producto, { eager: true })
+    @ManyToOne(() => Producto, { eager: true, nullable: true, onDelete: 'SET NULL' })
     Producto: Producto;
 
     @Column({ type: 'int' })

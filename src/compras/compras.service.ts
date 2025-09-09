@@ -1,10 +1,12 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
-import { DeepPartial, Repository } from 'typeorm';
-import { Compra } from './entities/compra.entity';
+import { DataSource, DeepPartial, Repository } from 'typeorm';
+import { Compra, CompraItem } from './entities/compra.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompraCreateDto } from './dto/create-compra.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { ProductosStockService } from 'src/productos-stock/productos-stock.service';
+import { ProductoStockLote } from 'src/productos-stock/entities/productos-stock.entity';
 const PDFDocument = require('pdfkit-table');
 const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 
@@ -17,7 +19,9 @@ export class ComprasService {
   constructor(
     @InjectRepository(Compra)
     protected readonly comprasRepo: Repository<Compra>,
-    private readonly usuariosService: UsuariosService
+    private readonly dataSource: DataSource,
+    private readonly usuariosService: UsuariosService,
+    private readonly stockService: ProductosStockService
   ) {
     this.logger = new Logger(`compraService`);
   }
@@ -37,26 +41,59 @@ export class ComprasService {
   }
 
   public async crear(dto: CompraCreateDto): Promise<Compra> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
     try {
+      // 1. Obtener el usuario
       const usuario = await this.usuariosService.obtenerPorId(dto.UsuarioId);
       if (!usuario) {
         throw new BadRequestException('Usuario no encontrado');
       }
-      const entity = this.comprasRepo.create({
-        ...dto,
-        Usuario: usuario, 
-      } as DeepPartial<Compra>);
 
-      (entity as any).Id = uuidv4();
-      (entity as any).Activo = true;
-      
-      return await this.comprasRepo.save(entity);
+      // 2. Crear la compra
+      const compra = this.comprasRepo.create({
+        ...dto,
+        Usuario: usuario,
+      } as DeepPartial<Compra>);
+      (compra as any).Id = uuidv4();
+      (compra as any).Activo = true;
+
+      const nuevaCompra = await queryRunner.manager.save(compra);
+
+      // 3. Actualizar stock de cada item
+      for (const item of dto.Items) {
+        const stock = await this.stockService.obtenerStockPorProductoId(item.Producto.Id);
+        if (!stock) {
+          throw new BadRequestException(`Stock no encontrado para el producto ${item.Producto.Id}`);
+        }
+
+        const nuevoLote: ProductoStockLote = {
+          Id: uuidv4(),
+          PrecioUnitario: item.Producto.PrecioCompra,
+          CantidadInicial: item.Cantidad,
+          CantidadActual: item.Cantidad,
+          FechaIngreso: dto.Fecha,
+          ProductoStock: stock
+        };
+
+        await this.stockService.aumentarStock(stock.Id, nuevoLote, queryRunner.manager);
+      }
+
+      // 4. Confirmar transacción
+      await queryRunner.commitTransaction();
+      return nuevaCompra;
+
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       if (error.code === '23505') {
         throw new BadRequestException(error.detail);
       }
       console.error(error);
       throw new InternalServerErrorException('Error inesperado, revisar el servicio de logs');
+    } finally {
+      await queryRunner.release();
     }
   }
 

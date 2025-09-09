@@ -12,7 +12,7 @@ export class RegistroActualizacionPrecio {
     @PrimaryGeneratedColumn('uuid')
     Id: number;
 
-    @ManyToOne(() => Producto, { eager: true })
+    @ManyToOne(() => Producto, { eager: true , onDelete: 'CASCADE' })
     @JoinColumn({ name: 'producto_id' })
     Producto: Producto;
 

@@ -106,9 +106,8 @@ export class ProductosService {
     return this.productosRepo.save(producto);
   }
 
-  public async crear(dto: CrearProductoDto,): Promise<Producto> {
+  public async crear(dto: CrearProductoDto): Promise<Producto> {
     try {
-      
       const entity = this.productosRepo.create({
         ...dto,
       } as DeepPartial<Producto>);
@@ -122,8 +121,12 @@ export class ProductosService {
         const dtoStock = new CrearProductosStockDto();
         dtoStock.StockActualTotal = 0;
         dtoStock.Producto = response;
+        dtoStock.Lotes = [];
+        const productoStock = await this.productosStockService.crear(dtoStock);
 
-        await this.productosStockService.crear(dtoStock);
+        (response as any).Stock = productoStock;
+
+        await this.productosRepo.save(response);
       }
 
       return response;

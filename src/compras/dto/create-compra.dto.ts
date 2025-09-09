@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsOptional, IsUUID, IsNumber, Min, IsDate, ValidateNested, IsString, IsArray } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsUUID, IsNumber, Min, IsDate, ValidateNested, IsString, IsArray, IsDecimal } from 'class-validator';
 import { Producto } from 'src/productos/entities/producto.entity';
 import { Proveedor } from 'src/proveedores/entities/proveedor.entity';
 import { Column } from 'typeorm';
@@ -8,8 +8,6 @@ export class CompraCreateDto {
     @IsDate()
     @Type(() => Date)
     Fecha: Date;
-
-    @IsNumber()
     @Min(0)
     Total: number;
 
@@ -33,8 +31,7 @@ export class CompraItemCreateDto {
     @IsNumber()
     @Min(1)
     Cantidad: number;
-
-    @IsNumber()
+    
     Subtotal: number;
 
     @IsOptional()

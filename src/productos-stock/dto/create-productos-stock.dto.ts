@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsArray, IsDate, IsEmpty, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, IsUUID } from "class-validator";
 import { Producto } from "src/productos/entities/producto.entity";
 
 export class CrearProductosStockDto {
@@ -13,6 +13,9 @@ export class CrearProductosStockDto {
     @IsOptional()
     @IsString()
     Observaciones?: string;
+    @IsArray()
+    @IsEmpty()
+    Lotes: any[];
 }
 
 

@@ -2,7 +2,7 @@
 import { Type } from "class-transformer";
 import { ValidateNested } from "class-validator";
 import { Producto } from "src/productos/entities/producto.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CrearProductoStockLote } from "../dto/create-productos-stock.dto";
 
 @Entity()
@@ -26,8 +26,7 @@ export class ProductoStock {
     @Column({ type: 'text', nullable: true })
     Observaciones?: string;
 
-    @ValidateNested({ each: true })
-    @Type(() => CrearProductoStockLote)
+    @OneToMany(() => ProductoStockLote, (lote) => lote.ProductoStock, { cascade: true, eager: true })
     Lotes: ProductoStockLote[];
 
     @Column('int', { nullable: true })
@@ -59,6 +58,10 @@ export class ProductoStockLote {
     @CreateDateColumn({ type: 'timestamp', name: 'fecha_ingreso' })
     FechaIngreso: Date;
 
+    @ManyToOne(() => ProductoStock, (stock) => stock.Lotes, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'producto_stock_id' })
+    ProductoStock: ProductoStock;
+
     @Column({
         type: 'decimal',
         precision: 10,
@@ -77,12 +80,12 @@ export class ProductoStockLote {
 
     @Column({
         type: 'int',
-        name: 'cantidad_actual',
+        name: 'cantidad_inicial',
         nullable: false,
     })
     CantidadInicial: number;
 
-    @ManyToOne(() => ProductoStockLoteEstado, { eager: true, nullable: false })
+   /*  @ManyToOne(() => ProductoStockLoteEstado, { eager: true, nullable: false })
     @JoinColumn({ name: 'estado_id' })
-    Estado: ProductoStockLoteEstado;
+    Estado: ProductoStockLoteEstado; */
 }
